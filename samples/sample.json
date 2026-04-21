@@ -1,0 +1,13 @@
+[
+  {
+    "cidr": "10.0.2.0/24",
+    "name": "Server VLAN",
+    "description": "Production servers",
+    "ips": [
+      { "address": "10.0.2.10", "name": "App Node 1", "description": "Node.js instance", "status": "active" },
+      { "address": "10.0.2.11", "name": "App Node 2", "description": "Node.js instance", "status": "active" },
+      { "address": "10.0.2.20", "name": "DB Primary", "description": "PostgreSQL primary", "status": "active" },
+      { "address": "10.0.2.21", "name": "DB Replica", "description": "PostgreSQL read replica", "status": "active" }
+    ]
+  }
+]

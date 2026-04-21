@@ -1,0 +1,7 @@
+cidr,name,description,ip,ip_name,ip_description,ip_status
+10.0.1.0/24,Office LAN,Main office network,10.0.1.10,Web Server,Primary web server,active
+10.0.1.0/24,,,10.0.1.11,App Server,Application backend,active
+10.0.1.0/24,,,10.0.1.20,Database,PostgreSQL primary,active
+10.0.1.0/24,,,10.0.1.30,Cache Server,Redis instance,active
+10.0.1.0/24,,,10.0.1.50,Printer,Office printer,reserved
+10.0.1.0/24,,,10.0.1.90,Old File Server,Decommission planned,deprecated
