@@ -20,7 +20,7 @@ A production-grade full-stack web application for managing network subnets and I
 |------------|---------------------------------------------------------------|
 | Backend    | NestJS 10, TypeORM, Passport JWT, class-validator             |
 | Frontend   | React 18, Vite, TanStack Query v5, React Hook Form, Zod      |
-| Database   | PostgreSQL 16 with UUID primary keys                          |
+| Database   | PostgreSQL 16 with UUID primary keys, TypeORM migrations      |
 | Infra      | Docker, Docker Compose, Nginx, pgweb                          |
 
 ## Quick Start with Docker
@@ -182,6 +182,44 @@ An array of subnet objects, each with an optional `ips` array.
 ]
 ```
 
+## Database Setup & Migrations
+
+The schema is managed through **TypeORM migrations** — `synchronize` is disabled in all environments.
+
+### With the NestJS environment (recommended)
+
+```bash
+cd backend
+
+# Generate a new migration after changing entities
+npm run migration:generate -- src/database/migrations/MigrationName
+
+# Apply pending migrations
+npm run migration:run
+
+# Revert the last migration
+npm run migration:revert
+
+# Show migration status
+npm run migration:show
+```
+
+Migrations are auto-discovered from `src/database/migrations/` and executed in timestamp order.
+
+### Without NestJS (raw SQL)
+
+For manual provisioning or CI pipelines that don't use Node.js:
+
+```bash
+psql -U postgres -d subnet_core -f database/init.sql
+```
+
+This standalone script creates all tables, indexes, and foreign keys identical to the TypeORM migration.
+
+### PostgreSQL version
+
+The project targets **PostgreSQL 16** (Alpine image). The `uuid-ossp` extension is required and is created automatically by the migration.
+
 ## Design Decisions
 
 1. **Clean Architecture** — Controllers handle HTTP, Services contain business logic, Repositories abstract data access. This separation enables independent testing and replacement of each layer.
@@ -205,7 +243,6 @@ An array of subnet objects, each with an optional `ips` array.
 
 ### Current Trade-offs
 
-- **synchronize: true** in TypeORM for development — In production, use proper migrations (`typeorm migration:generate` / `migration:run`).
 - **In-memory file processing** — CSV and JSON files are parsed from the memory buffer. For very large files, streaming parsing would be more memory-efficient.
 - **Single-process seed** — The seed script runs as a separate container. A more robust approach would use TypeORM migrations with seed hooks.
 
@@ -213,5 +250,5 @@ An array of subnet objects, each with an optional `ips` array.
 - [ ] Add CSV/JSON export functionality
 - [ ] Implement subnet overlap detection
 - [ ] Add Redis for caching frequently accessed data
-- [ ] Implement proper database migrations for production
+- [x] ~~Implement proper database migrations for production~~
 - [ ] Add YAML and XML import strategies via the parser factory
