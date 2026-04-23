@@ -224,5 +224,4 @@ The project targets **PostgreSQL 16** (Alpine image). The `uuid-ossp` extension 
 - [ ] CSV/JSON export
 - [ ] Subnet overlap detection
 - [ ] Redis caching
-- [x] ~~Production database migrations~~
 - [ ] YAML and XML import strategies
